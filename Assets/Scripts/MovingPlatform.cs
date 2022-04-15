@@ -9,7 +9,7 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField]
     private Transform[] waypoints;
     [SerializeField]
-    private bool waitForPlayer;
+    private bool waitForPlayer = false;
     [SerializeField] private bool DontStopAtWayPoint;
     [SerializeField] private GameObject platform;
 
@@ -29,10 +29,29 @@ public class MovingPlatform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
 
     }
+
+    private void RotateToFaceWaypoint()
+    {
+        Vector3 dirFromMeToTarget = waypoints[currWaypointIndex].position - transform.position;
+        dirFromMeToTarget.y = 0;
+        if (dirFromMeToTarget != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(dirFromMeToTarget);
+           
+            rb.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 720f / 360.0f);
+           
+        }
+       
+    }
+
     private void FixedUpdate()
     {
+        RotateToFaceWaypoint();
+
         if (!waitForPlayer && paused == false)
         {
             MovePlatform();
@@ -107,7 +126,7 @@ public class MovingPlatform : MonoBehaviour
     }
     private IEnumerator changeDirection()
     {
-        lookAt();
+        //lookAt();
         if (!DontStopAtWayPoint)
         {
             paused = true;
@@ -116,27 +135,27 @@ public class MovingPlatform : MonoBehaviour
             paused = false;
         }
     }
-    private void lookAt()
-    {
+//    private void lookAt()
+//    {
         
-           // var rotation = Quaternion.LookRotation(waypoints[currWaypointIndex+1].position - transform.position);
-           // platform.transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 2);
-       // transform.Rotate(Vector3.up * 100);
-       if(currWaypointIndex == waypoints.Length - 1)
-        {
+//           // var rotation = Quaternion.LookRotation(waypoints[currWaypointIndex+1].position - transform.position);
+//           // platform.transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 2);
+//       // transform.Rotate(Vector3.up * 100);
+//       if(currWaypointIndex == waypoints.Length - 1)
+//        {
 
-            transform.LookAt(waypoints[0].position);
-            transform.Rotate(Vector3.up * 90);
+//            transform.LookAt(waypoints[0].position);
+//            transform.Rotate(Vector3.up * -90);
 
-        }
-        else
-        {
-            transform.LookAt(waypoints[currWaypointIndex + 1].position);
-            transform.Rotate(Vector3.up * -90);
+//        }
+//        else
+//        {
+//            transform.LookAt(waypoints[currWaypointIndex + 1].position);
+//            transform.Rotate(Vector3.up * -90);
    
-        }
-        //Debug.Log(currWaypointIndex);
-//        Debug.Log(waypoints[currWaypointIndex + 1].position);
+//        }
+//        //Debug.Log(currWaypointIndex);
+////        Debug.Log(waypoints[currWaypointIndex + 1].position);
 
-    }
+//    }
 }

@@ -7,8 +7,11 @@ public class FishingBoat : MonoBehaviour
 
     //[SerializeField] private Rigidbody rb;
     [SerializeField] private Transform[] waypoints;
+    [SerializeField] Rigidbody rb;
     public float speed;
+    private Vector3 newPos;
     private int currWaypointIndex = 0;
+    private bool moveit = false;
 
     // Start is called before the first frame update
     private void Awake()
@@ -24,6 +27,7 @@ public class FishingBoat : MonoBehaviour
     {
         Debug.Log("THE FISHER DIED FROM BOAT SCRIPT");
         MoveBoat();
+        moveit = true;
     }
     void Start()
     {
@@ -31,13 +35,32 @@ public class FishingBoat : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        if (moveit)
+        {
+            //rb.MovePosition(newPos);
+            MoveBoat();
+        }
     }
     void MoveBoat()
     {
         float step = speed * Time.deltaTime;
+        //Vector3 newPos = new Vector3(transform.position, waypoints[currWaypointIndex].position, step);
+        //rb.MovePosition(Vector3.MoveTowards(transform.position, waypoints[currWaypointIndex].position, step));
+        //rb.Move(waypoints[currWaypointIndex].position);
+        //Debug.Log("why doesnt it move");
+
+
+
+       
         Vector3 newPos = Vector3.MoveTowards(transform.position, waypoints[currWaypointIndex].position, step);
+
+        //moveit = true;
+        //  rb.MovePosition(newPos);
+        rb.MovePosition(newPos);
+           
+          
+        
     }
 }

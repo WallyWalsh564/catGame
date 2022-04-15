@@ -41,15 +41,19 @@ public class movement : MonoBehaviour
 
     bool isTouchGround()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+        return cc.isGrounded;
+        //return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
     }
     // Update is called once per frame
     void Update()
     {
         speed = originSpeed;
-        
 
-        if (isTouchGround())
+        bool isGrounded = isTouchGround();
+       // Debug.Log("isgrounded:" + isGrounded);
+        anim.SetBool("isGrounded", isGrounded);
+
+        if (isGrounded)
         {
             anim.SetBool("jumping", false);
             anim.SetBool("doubleJump", false);
@@ -92,20 +96,23 @@ public class movement : MonoBehaviour
             yVelocity = yVelocityWhenGrounded;
         }
         movement.y = yVelocity;
+       // Debug.Log("y vel:" + yVelocity);
         //jump
         
       
-        if (Input.GetButtonDown("Jump") && isTouchGround())
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
             yVelocity = initialJumpVelocity;
             dblJump = true;
-            anim.SetBool("jumping", true);
+            //anim.SetBool("jumping", true);
+            anim.SetTrigger("jump");
         }
         else
         {
             if (Input.GetButtonDown("Jump") && dblJump == true)
             {
-                anim.SetBool("doubleJump", true);
+                anim.SetTrigger("jump");
+                //anim.SetBool("doubleJump", true);
                 yVelocity = initialJumpVelocity;
                 dblJump = false;
             }

@@ -13,18 +13,31 @@ public class Death : MonoBehaviour
     {
 //        StartCoroutine(DeathExplostion());
     }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
+ 
         PlayerManager player = other.GetComponent<PlayerManager>();
         if (player != null)
         {
-            if(player.IsAttacking() == true)
+            Debug.Log("ots");
+            if (player.IsAttacking() == true)
             {
                 StartCoroutine(DeathExplostion());
             }
         }
     }
+    //private void OnTriggerEnter2(Collider other)
+    //{
+    //    PlayerManager player = other.GetComponent<PlayerManager>();
+    //    if (player != null)
+    //    {
+    //        if(player.IsAttacking() == true)
+    //        {
+    //            StartCoroutine(DeathExplostion());
+    //        }
+    //    }
+    //}
+    
 
     //private void OnCollisionEnter(Collision collision)
     //{
