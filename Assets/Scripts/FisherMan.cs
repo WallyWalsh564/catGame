@@ -11,6 +11,7 @@ public class FisherMan : MonoBehaviour
     }
     private void OnDestroy()
     {
+        Messenger.Broadcast(GameEvent.ENEMY_DEAD);
         Messenger.Broadcast(GameEvent.FISHER_DIED);
         Messenger.RemoveListener(GameEvent.FISHER_DIED, OnFisherDied);
     }

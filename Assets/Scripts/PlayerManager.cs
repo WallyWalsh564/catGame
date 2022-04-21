@@ -7,16 +7,46 @@ public class PlayerManager : MonoBehaviour
     private int health;
     private int maxHealth = 5;
     [SerializeField] private Animator anim;
-    [SerializeField] private GameObject dockSpawn;    
+    [SerializeField] private GameObject dockSpawn;
+    [SerializeField] private ParticleSystem blood;
+    [SerializeField] private GameObject player;
+    private Vector3 respawnLocation;
+
+
+    private void Awake()
+    {
+        Messenger.AddListener(GameEvent.FISHER_DIED, OnFisherDied);
+        Messenger.AddListener(GameEvent.PLAYER_DEAD, OnPlayerDead);
+    }
+    private void OnDestroy()
+    {
+        Messenger.RemoveListener(GameEvent.FISHER_DIED, OnFisherDied);
+        Messenger.RemoveListener(GameEvent.PLAYER_DEAD, OnPlayerDead);
+    }
+
+    void OnFisherDied()
+    {
+        updateRespawn(dockSpawn.transform.position);
+    }
+
+    void OnPlayerDead()
+    {
+        StartCoroutine(DeathExplostion());
+    }
+
     void Start()
     {
         health = maxHealth;
+        respawnLocation = dockSpawn.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if(transform.position.y < -4.9) {
+            respawn();
+        }
+        
     }
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
@@ -47,6 +77,20 @@ public class PlayerManager : MonoBehaviour
     }
     public void respawn()
     {
-        transform.position = dockSpawn.transform.position;
+        transform.position = respawnLocation;
+    }
+
+    public void updateRespawn(Vector3 newLocation)
+    {
+        respawnLocation = newLocation;
+
+    }
+
+    IEnumerator DeathExplostion()
+    {
+        yield return new WaitForSeconds(0);
+        Instantiate(blood, transform.position, Quaternion.identity);
+        Messenger.Broadcast(GameEvent.ENEMY_DEAD);
+        player.SetActive(false);
     }
 }

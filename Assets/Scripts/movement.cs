@@ -12,7 +12,7 @@ public class movement : MonoBehaviour
     //spin variable
     public float sensitivityHoriz = 9.0f;
     //gravity variables
-    private float gravity = -9.81f;
+    private float gravity = -42f;
     private float yVelocity = 0.0f;
     private float yVelocityWhenGrounded = -4.0f; //Y velocity when grounded
     //underwater gravity 
@@ -41,8 +41,8 @@ public class movement : MonoBehaviour
 
     bool isTouchGround()
     {
-        return cc.isGrounded;
-        //return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+        //return cc.isGrounded;
+        return (Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f) || cc.isGrounded);
     }
     // Update is called once per frame
     void Update()

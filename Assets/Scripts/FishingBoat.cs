@@ -8,6 +8,7 @@ public class FishingBoat : MonoBehaviour
     //[SerializeField] private Rigidbody rb;
     [SerializeField] private Transform[] waypoints;
     [SerializeField] Rigidbody rb;
+    [SerializeField] CharacterController cc;
     public float speed;
     private Vector3 newPos;
     private int currWaypointIndex = 0;
@@ -59,8 +60,9 @@ public class FishingBoat : MonoBehaviour
         //moveit = true;
         //  rb.MovePosition(newPos);
         rb.MovePosition(newPos);
-           
-          
-        
+        cc.Move(rb.velocity * Time.deltaTime);
+
+
+
     }
 }
