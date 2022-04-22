@@ -60,7 +60,7 @@ public class UIController : MonoBehaviour
         scoreValue.text = enemiesRemaining.ToString();
         if (enemiesRemaining == 0)
         {
-            Messenger.Broadcast(GameEvent.PLAYER_WINS);
+           // Messenger.Broadcast(GameEvent.PLAYER_WINS);
             YouWin.SetActive(true);
         }
         
